@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0c0b" />
+    <title>Red Five — The Trench Run</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="experience">
+      <header class="site-header">
+        <a class="wordmark" href="#top" aria-label="Red Five mission home">
+          <span class="wordmark-mark">R<span>5</span></span>
+          <span>REBEL FLIGHT<br />OPERATIONS</span>
+        </a>
+        <div class="mission-mark">
+          <span class="eyebrow">ALLIANCE ARCHIVE // 04</span>
+          <span class="mission-title">THE TRENCH RUN</span>
+        </div>
+        <div class="header-controls">
+          <span class="live-status"><i></i> LIVE SIMULATION</span>
+          <button class="icon-button" id="soundToggle" type="button" aria-label="Turn sound on" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12-1.8a6.8 6.8 0 0 1 0 9.6M18.7 4.5a10.7 10.7 0 0 1 0 15"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="mission" id="top" aria-label="Death Star trench run simulation">
+        <aside class="chapter-rail" aria-label="Mission sequence">
+          <span class="rail-label">FLIGHT LOG / 01</span>
+          <nav class="chapters">
+            <button class="chapter active" type="button" data-chapter="0">
+              <span class="chapter-number">01</span>
+              <span class="chapter-copy"><b>THE DIVE</b><small>YAVIN IV → DEATH STAR</small></span>
+            </button>
+            <button class="chapter" type="button" data-chapter="1">
+              <span class="chapter-number">02</span>
+              <span class="chapter-copy"><b>STAY ON TARGET</b><small>PRESSURE RISING</small></span>
+            </button>
+            <button class="chapter" type="button" data-chapter="2">
+              <span class="chapter-number">03</span>
+              <span class="chapter-copy"><b>TRUST THE FORCE</b><small>SYSTEMS UNLINKED</small></span>
+            </button>
+            <button class="chapter" type="button" data-chapter="3">
+              <span class="chapter-number">04</span>
+              <span class="chapter-copy"><b>ONE SHOT</b><small>IMPACT IMMINENT</small></span>
+            </button>
+          </nav>
+          <div class="rail-coordinates">
+            <span>DS-1 ORBITAL ZONE</span>
+            <b>038.04° N<br />011.07° E</b>
+          </div>
+        </aside>
+
+        <div class="viewport-shell">
+          <div class="viewport">
+            <canvas id="trenchCanvas" aria-label="Animated view of an X-wing flying through a Death Star trench"></canvas>
+            <div class="scanlines" aria-hidden="true"></div>
+            <div class="cockpit-mask" aria-hidden="true">
+              <span class="strut strut-left"></span>
+              <span class="strut strut-right"></span>
+            </div>
+
+            <div class="viewport-top">
+              <div><i class="rec-dot"></i> RED FIVE // COCKPIT CAM</div>
+              <div id="missionClock">T + 00:00.00</div>
+            </div>
+
+            <div class="targeting-reticle" id="reticle" aria-hidden="true">
+              <span class="reticle-corner tl"></span>
+              <span class="reticle-corner tr"></span>
+              <span class="reticle-corner bl"></span>
+              <span class="reticle-corner br"></span>
+              <div class="target-core"></div>
+              <span class="target-caption">EXHAUST PORT</span>
+              <span class="target-range" id="targetRange">1.8 KM</span>
+            </div>
+
+            <div class="wing-bars" aria-hidden="true">
+              <span></span><span></span><i>RED 5</i><span></span><span></span>
+            </div>
+
+            <div class="viewport-caption">
+              <span class="caption-index" id="phaseIndex">01 / 04</span>
+              <div>
+                <p class="eyebrow" id="phaseEyebrow">FINAL APPROACH</p>
+                <h1 id="phaseTitle">THE DIVE</h1>
+              </div>
+            </div>
+
+            <div class="flight-hud">
+              <div><span>VELOCITY</span><b id="velocity">927 <small>KT</small></b></div>
+              <div><span>SHIELD</span><b id="shield">84<small>%</small></b></div>
+              <div><span>WINGMEN</span><b>01</b></div>
+            </div>
+
+            <div class="hold-overlay" id="impactOverlay" aria-live="polite" hidden>
+              <span class="eyebrow">DIRECT HIT // MISSION COMPLETE</span>
+              <h2>THE GALAXY<br />HAS A CHANCE.</h2>
+              <button class="button light-button" id="replayButton" type="button">
+                FLY IT AGAIN <span>↻</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="playback-bar">
+            <button class="play-button" id="playButton" type="button" aria-label="Pause mission">
+              <span class="pause-icon"></span>
+            </button>
+            <div class="timeline-wrap">
+              <div class="timeline-labels">
+                <span>MISSION FEED</span>
+                <span id="progressLabel">00:00 / 01:08</span>
+              </div>
+              <input id="timeline" type="range" min="0" max="68" value="0" step="0.1" aria-label="Mission progress" />
+              <div class="timeline-phases" aria-hidden="true">
+                <i style="left: 0%"></i><i style="left: 25%"></i><i style="left: 52%"></i><i style="left: 79%"></i>
+              </div>
+            </div>
+            <button class="text-button" id="resetButton" type="button">RESET</button>
+          </div>
+        </div>
+
+        <aside class="telemetry">
+          <div class="telemetry-block comms-block">
+            <div class="panel-label">
+              <span>COMMS / OPEN CHANNEL</span><i class="status-pip"></i>
+            </div>
+            <div class="speaker-row">
+              <div class="speaker-avatar" id="speakerAvatar">OW</div>
+              <div><b id="speaker">OBI-WAN</b><span id="speakerRole">GUIDANCE LINK</span></div>
+              <span class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+            <blockquote id="commsQuote">“Use the Force, Luke.”</blockquote>
+            <div class="signal-line"><span>RECEIVING</span><b id="signalBars">▂▄▆█</b></div>
+          </div>
+
+          <div class="telemetry-block ship-block">
+            <div class="panel-label"><span>CRAFT / T-65B X-WING</span><span>R5</span></div>
+            <div class="ship-schematic" aria-hidden="true">
+              <svg viewBox="0 0 260 170">
+                <g fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M130 12 137 66 239 88 239 101 137 93 130 157 123 93 21 101 21 88 123 66Z"/>
+                  <path d="m21 88 1-31 101 9 107-9v31M24 101l1 24 98-15 113 15-1-24"/>
+                  <path d="M123 66 130 42l7 24m-7 27V12m-7 145h14"/>
+                  <circle cx="130" cy="83" r="16"/>
+                </g>
+                <circle cx="130" cy="83" r="3" fill="currentColor"/>
+                <path d="M130 12v30M21 88h14m190 0h14M24 101v24M236 101v24" stroke="#d8ff45" stroke-width="3"/>
+              </svg>
+              <span class="scan-sweep"></span>
+            </div>
+            <div class="ship-stat-grid">
+              <div><span>LASER SYSTEM</span><b id="laserStatus">ARMED</b></div>
+              <div><span>TARGETING</span><b id="targetStatus">MANUAL</b></div>
+              <div><span>ENGINE 04</span><b>OPTIMAL</b></div>
+              <div><span>HULL INTEGRITY</span><b id="hullStatus">93%</b></div>
+            </div>
+          </div>
+
+          <div class="telemetry-block guidance-block">
+            <div class="panel-label"><span>PILOT CONTROL</span><span>MANUAL</span></div>
+            <p id="controlHint">Move your cursor to steer. Keep the port inside the reticle.</p>
+            <div class="control-guide">
+              <span><i class="arrow-keys">← ↑ ↓ →</i> STEER</span>
+              <span><kbd>F</kbd> FIRE</span>
+            </div>
+            <button class="button fire-button" id="fireButton" type="button" disabled>
+              <span>FIRE PROTON TORPEDOES</span><b>F</b>
+            </button>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="mission-footer">
+        <p>A CINEMATIC FLIGHT EXPERIMENT <span>·</span> BUILT FROM SIGNAL, SHADOW &amp; INSTINCT</p>
+        <p>NO HYPERSPACE. NO SECOND CHANCES.</p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
